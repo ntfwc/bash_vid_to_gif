@@ -18,10 +18,31 @@ INTERMEDIATE_GIF="$TMP_DIR/intermediate_gif.gif" #Used with gif optimization
 
 #-----------------------------------------------------------------
 
+#params: video
+function get_video_framerate
+{
+	VIDEO="$1"
+	FRAMERATE=$($VIDEO_INSPECTOR -v quiet -show_streams "$VIDEO" | grep -P -o '(?<=(r_frame_rate=))[0-9]+(/[0-9]+)?' | cut -f 1 -d $'\n')
+
+	FRACTION_RE=[0-9]+/[0-9]+
+
+	if [[ $FRAMERATE =~ $FRACTION_RE ]]
+	then
+		x=$(echo $FRAMERATE | cut -f 1 -d "/")
+		y=$(echo $FRAMERATE | cut -f 2 -d "/")
+		#FRAMERATE=$(echo "scale=3; $x / $y" | bc)
+		FRAMERATE=$(( $x / $y ))
+	fi
+
+
+	echo $FRAMERATE
+}
+
+
 #Parse input
 INPUT_VIDEO="$1"
 
-if [ -z $1 ]
+if [ -z "$1" ]
 then
 	echo "Usage: convert_video_to_gif.sh video_file [duration] [starting_second]"
 	exit 0
@@ -59,6 +80,13 @@ else
 	fi
 fi
 
+#Make sure the output doesn't already exist
+if [ -e "$OUTPUT_GIF" ]
+then
+	echo "Output file already exists!"
+	exit 1
+fi
+
 #Set up
 mkdir $INTERMEDIATE_FRAMES_DIR
 
@@ -71,7 +99,7 @@ else
 fi
 
 #Get the framerate
-FRAMERATE=$($VIDEO_INSPECTOR -v quiet -show_streams "$INPUT_VIDEO" | grep -P -o '(?<=(r_frame_rate=))[0-9]+' | cut -f 1 -d $'\n')
+FRAMERATE=$(get_video_framerate "$INPUT_VIDEO")
 
 #Create the gif
 if [ $OPTIMIZE -eq 1 ]
