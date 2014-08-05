@@ -1,5 +1,5 @@
 #Description
-A small script to convert a video or part of a video to a gif file.
+A small bash script to convert a video or part of a video to a gif file.
 
 #Dependencies
 * FFmpeg/Libav
