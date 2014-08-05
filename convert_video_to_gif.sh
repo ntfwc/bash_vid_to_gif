@@ -93,9 +93,9 @@ mkdir $INTERMEDIATE_FRAMES_DIR
 #Extract the frames
 if [ -z $DURATION ]
 then
-	$VIDEO_CONVERTER -i "$INPUT_VIDEO" -pix_fmt rgb24 "$INTERMEDIATE_FRAMES_DIR/%3d.png" || exit 1
+	$VIDEO_CONVERTER -i "$INPUT_VIDEO" -vf scale=$RESIZE_WIDTH:-1 -pix_fmt rgb24 "$INTERMEDIATE_FRAMES_DIR/%3d.png" || exit 1
 else
-	$VIDEO_CONVERTER -i "$INPUT_VIDEO" -ss $START_SECOND -t $DURATION -pix_fmt rgb24  "$INTERMEDIATE_FRAMES_DIR/%3d.png" || exit 1
+	$VIDEO_CONVERTER -i "$INPUT_VIDEO" -vf scale=$RESIZE_WIDTH:-1 -ss $START_SECOND -t $DURATION -pix_fmt rgb24  "$INTERMEDIATE_FRAMES_DIR/%3d.png" || exit 1
 fi
 
 #Get the framerate
@@ -104,10 +104,10 @@ FRAMERATE=$(get_video_framerate "$INPUT_VIDEO")
 #Create the gif
 if [ $OPTIMIZE -eq 1 ]
 then
-	convert -delay 1x$FRAMERATE -loop 0 -resize $RESIZE_WIDTH "$INTERMEDIATE_FRAMES_DIR/*.png" "$INTERMEDIATE_GIF"
+	convert -delay 1x$FRAMERATE -loop 0 "$INTERMEDIATE_FRAMES_DIR/*.png" "$INTERMEDIATE_GIF"
 	convert -layers Optimize "$INTERMEDIATE_GIF" "$OUTPUT_GIF"
 else
-	convert -delay 1x$FRAMERATE -loop 0 -resize $RESIZE_WIDTH "$INTERMEDIATE_FRAMES_DIR/*.png" "$OUTPUT_GIF"
+	convert -delay 1x$FRAMERATE -loop 0 "$INTERMEDIATE_FRAMES_DIR/*.png" "$OUTPUT_GIF"
 fi
 
 #Clean up
