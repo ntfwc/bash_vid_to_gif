@@ -9,5 +9,8 @@ A small bash script to convert a video or part of a video to a gif file.
 The script has a section at the top for settings. 
 
 #Usage
-Just run the script with
+Run the script with
 > `path/to/script_folder/convert_video_to_gif.sh video_file [duration] [start_second]`
+
+or
+> `bash path/to/script_folder/convert_video_to_gif.sh video_file [duration] [start_second]`
