@@ -14,3 +14,5 @@ Run the script with
 
 or
 > `bash path/to/script_folder/convert_video_to_gif.sh video_file [duration] [start_second]`
+
+Note: Both duration and start_second can be decimal numbers (eg. 10.25).
