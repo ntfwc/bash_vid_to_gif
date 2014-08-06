@@ -90,8 +90,14 @@ then
 	exit 1
 fi
 
+#Clean up from last time (if we exited early)
+if [ -d "$INTERMEDIATE_FRAMES_DIR" ]
+then
+	rm $INTERMEDIATE_FRAMES_DIR/*.png
+fi
+
 #Set up
-mkdir $INTERMEDIATE_FRAMES_DIR
+mkdir "$INTERMEDIATE_FRAMES_DIR"
 
 #Extract the frames
 if [ -z $DURATION ]
