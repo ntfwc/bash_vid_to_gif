@@ -45,6 +45,9 @@ INPUT_VIDEO="$1"
 if [ -z "$1" ]
 then
 	echo "Usage: convert_video_to_gif.sh video_file [duration] [starting_second]"
+	echo "video_file - a path to any video file supported by FFmpeg/Libav"
+	echo "duration - the number of seconds to convert, can be a decimal number"
+	echo "starting_second - the second of the video to start the conversion at, can be a decimal number"
 	exit 0
 fi
 
